@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sample Node JS App</title>
+    <style>
+        form div {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input textarea {
+            padding: 5px 10px;
+        }
+
+        .container {
+            position: absolute;
+            top: 35%;
+            left: 35%;
+            margin: auto;
+            width: 20%;
+            border: 3px solid rgb(10, 10, 10);
+            padding: 10px;
+            box-shadow: 10px 10px rgb(189, 180, 180);            
+        }
+        
+    </style>
+    <script>
+        async function handleUpdateProfileRequest() {
+            console.log("handleUpdateProfileRequest=====>start");
+            const payload = {
+                name: document.getElementById('Name').value, 
+                designation: document.getElementById('Designation').value, 
+                address: document.getElementById('Address').value
+            };
+            
+            const response = await fetch('http://localhost:8082/bio-update', {
+                method: "POST",
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            console.log("handleUpdateProfileRequest=====>before response:");
+            console.log(response);
+            const jsonResponse = await response.json();
+            console.log("handleUpdateProfileRequest=====>after response");
+            document.getElementById('Name').textContent = jsonResponse.name;
+            document.getElementById('Designation').textContent = jsonResponse.designation;
+            document.getElementById('Address').textContent = jsonResponse.address;
+            console.log("handleUpdateProfileRequest=====>End");
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <form >
+            <div>
+                <label for="Name">Name: </label>
+                <input name="Name" id="Name" autofocus />
+            </div>
+            <div>
+                <label for="Designation">Designation:</label>
+                <input id="Designation" name="Designation" />
+            </div>
+            <div>
+                <label for="Address">Address:</label>
+                <textarea name="Address" id="Address"></textarea>
+            </div>
+            <div class="bt-btn">
+                <label for="Address"></label>
+                <input type="button" class="btn btn-dark" onclick="handleUpdateProfileRequest()" value="Submit"></input>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
